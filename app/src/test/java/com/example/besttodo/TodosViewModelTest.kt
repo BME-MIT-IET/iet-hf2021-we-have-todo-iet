@@ -150,4 +150,42 @@ class TodosViewModelTest : ViewModelTest() {
         verify(mockTodosPresenter).updateTodo(TODO)
     }
 
+    @Test
+    fun testDeleteTodoResultSuccess() = runBlockingTest {
+        // Given
+        val mockTodosPresenter = mock<TodosPresenter>()
+        whenever(mockTodosPresenter.getTodos()) doReturn ResultSuccess(value = TODOS)
+        whenever(mockTodosPresenter.deleteTodo(TODO)) doReturn ResultSuccess(Unit)
+
+        viewModel = TodosViewModel(mockTodosPresenter, mockResourcesHelper)
+        viewModel.load()
+
+        //When, Then
+        viewModel.observeStateAndEvents { stateObserver, eventsObserver ->
+            viewModel.deleteTodo(TODO)
+            stateObserver.assertObserved(TodosLoaded(TODOS), Loading, TodosLoaded(TODOS))
+            eventsObserver.assertObserved(ActionSuccess(MOCK_RESOURCES_HELPER_STRING))
+        }
+        verify(mockTodosPresenter).deleteTodo(TODO)
+    }
+
+    @Test
+    fun testDeleteTodoResultFailed() = runBlockingTest {
+        // Given
+        val mockTodosPresenter = mock<TodosPresenter>()
+        whenever(mockTodosPresenter.getTodos()) doReturn ResultSuccess(value = TODOS)
+        whenever(mockTodosPresenter.deleteTodo(TODO)) doReturn ResultFailure(reason = FAILURE_REASON)
+
+        viewModel = TodosViewModel(mockTodosPresenter, mockResourcesHelper)
+        viewModel.load()
+
+        //When, Then
+        viewModel.observeStateAndEvents { stateObserver, eventsObserver ->
+            viewModel.deleteTodo(TODO)
+            stateObserver.assertObserved(TodosLoaded(TODOS), Loading, TodosLoaded(TODOS))
+            eventsObserver.assertObserved(Failed(FAILURE_REASON))
+        }
+        verify(mockTodosPresenter).deleteTodo(TODO)
+    }
+
 }
