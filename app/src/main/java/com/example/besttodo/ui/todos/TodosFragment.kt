@@ -22,7 +22,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
 import java.time.Duration
 
-class TodosFragment : RainbowCakeFragment<TodosViewState, TodosViewModel>(),
+class TodosFragment : RainbowCakeFragment<TodosViewState, TodosViewModelBase>(),
     TodosRecyclerViewAdapter.TodoItemClickListener {
 
     override fun provideViewModel() = getViewModelFromFactory()
