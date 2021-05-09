@@ -113,4 +113,41 @@ class TodosViewModelTest : ViewModelTest() {
         verify(mockTodosPresenter).addTodo(TODO)
     }
 
+    @Test
+    fun testUpdateTodoResultSuccess() = runBlockingTest {
+        // Given
+        val mockTodosPresenter = mock<TodosPresenter>()
+        whenever(mockTodosPresenter.getTodos()) doReturn ResultSuccess(value = TODOS)
+        whenever(mockTodosPresenter.updateTodo(TODO)) doReturn ResultSuccess(Unit)
+
+        viewModel = TodosViewModel(mockTodosPresenter, mockResourcesHelper)
+        viewModel.load()
+
+        //When, Then
+        viewModel.observeStateAndEvents { stateObserver, eventsObserver ->
+            viewModel.updateTodo(TODO)
+            stateObserver.assertObserved(TodosLoaded(TODOS), Loading, TodosLoaded(TODOS))
+        }
+        verify(mockTodosPresenter).updateTodo(TODO)
+    }
+
+    @Test
+    fun testUpdateTodoResultFailed() = runBlockingTest {
+        // Given
+        val mockTodosPresenter = mock<TodosPresenter>()
+        whenever(mockTodosPresenter.getTodos()) doReturn ResultSuccess(value = TODOS)
+        whenever(mockTodosPresenter.updateTodo(TODO)) doReturn ResultFailure(reason = FAILURE_REASON)
+
+        viewModel = TodosViewModel(mockTodosPresenter, mockResourcesHelper)
+        viewModel.load()
+
+        //When, Then
+        viewModel.observeStateAndEvents { stateObserver, eventsObserver ->
+            viewModel.updateTodo(TODO)
+            stateObserver.assertObserved(TodosLoaded(TODOS), Loading, TodosLoaded(TODOS))
+            eventsObserver.assertObserved(Failed(FAILURE_REASON))
+        }
+        verify(mockTodosPresenter).updateTodo(TODO)
+    }
+
 }
