@@ -1,26 +1,24 @@
 package com.example.besttodo
 
-import android.app.AlertDialog
-import android.os.Bundle
+import androidx.fragment.app.testing.FragmentScenario
 import androidx.fragment.app.testing.launchFragmentInContainer
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.Navigation
+import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.activityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.besttodo.core.di.TestDataModule
 import com.example.besttodo.ui.todos.TodosFragment
 import com.example.besttodo.ui.todos.models.UiTodo
 import com.example.besttodo.ui.todos.recyclerview.TodosRecyclerViewAdapter
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.instanceOf
+import org.hamcrest.Matchers.not
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -28,26 +26,40 @@ import org.junit.runner.RunWith
 @RunWith(AndroidJUnit4::class)
 class TodosFragmentTest {
 
-    val listItemNumberInTest = 2
+    private val listItemNumberInTest = 2
 
-    val todoInTest = UiTodo(2, "Name2")
+    private val todoInTest = UiTodo(2, "Name2")
 
-    val todosList = MutableList<UiTodo>(listItemNumberInTest + 1) {
-        UiTodo(it.toLong(), "Name${it}")
-    }.apply {
-        this[listItemNumberInTest] = todoInTest
-    }
+    private lateinit var navController: TestNavHostController
 
-    @get:Rule
-    var activityScenarioRule = activityScenarioRule<MainActivity>()
+    private lateinit var scenario: FragmentScenario<TodosFragment>
 
     @Before
-    fun initRecyclerViewWithData() {
-        activityScenarioRule.scenario.onActivity { activity: MainActivity? ->
-            (activity?.findViewById<RecyclerView>(R.id.rvTodos)?.adapter
-                    as? ListAdapter<UiTodo, TodosRecyclerViewAdapter.ViewHolder>)
-                ?.submitList(todosList)
+    fun initFragment() {
+        TestDataModule.todosList = MutableList(listItemNumberInTest + 2) {
+            UiTodo(it.toLong(), "Name${it}")
+        }.apply {
+            this[listItemNumberInTest] = todoInTest
         }
+
+        navController = TestNavHostController(
+            ApplicationProvider.getApplicationContext()
+        )
+
+        scenario = launchFragmentInContainer(
+            themeResId = R.style.Theme_BestTodo
+        ) {
+            TodosFragment()
+        }
+
+        scenario.onFragment(object : FragmentScenario.FragmentAction<TodosFragment> {
+            override fun perform(fragment: TodosFragment) {
+                navController.setGraph(R.navigation.mobile_navigation)
+                Navigation.setViewNavController(fragment.requireView(), navController)
+                navController.setCurrentDestination(R.id.navigation_home)
+            }
+
+        })
     }
 
     @Test
@@ -92,5 +104,19 @@ class TodosFragmentTest {
             .check(matches(isDisplayed()))
     }
 
+    @Test
+    fun whenTodoDeleted_thenNotDisplayed() {
+        // When
+        onView(withId(R.id.rvTodos))
+            .perform(actionOnItemAtPosition<TodosRecyclerViewAdapter.ViewHolder>(
+                listItemNumberInTest, longClick()
+            ))
+        onView(withText(R.string.btn_yes)).perform(click())
+
+        // Then
+        onView(withId(R.id.rvTodos))
+            .check(matches(
+                not(hasDescendant(allOf(withId(R.id.tvWorkoutName), withText(todoInTest.name))))))
+    }
 
 }

@@ -3,12 +3,12 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
-    <string name="error_cant_be_empty">Can\'t be empty!</string>
+    <string name="error_cant_be_empty">Name can\'t be empty!</string>
     <string name="txt_created">Created</string>
     <string name="hint_name">Name</string>
     <string name="btn_add">Add</string>
     <string name="error_invalid_name">Invalid name</string>
-    <string name="error_todos_limit">You can have only %1$d unchecked todos at once!</string>
+    <string name="error_todos_limit">You can have only a limited number of unchecked todos at once!</string>
     <string name="title_warning">Warning</string>
     <string name="txt_sure_to_delete">Are you sure to delete this todo?</string>
     <string name="btn_yes">Yes</string>
