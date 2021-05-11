@@ -54,5 +54,28 @@ class DataBaseTest {
         assertThat(actualTodos).isEqualTo(ROOM_TODOS)
     }
 
+    @Test
+    fun testUpdateAndAddAndGetTodos() {
+        // When
+        todoDao.insertTodo(ROOM_TODO0)
+        todoDao.updateTodo(ROOM_TODO0)
+
+        // Then
+        val actualTodos = todoDao.getTodos()
+        assertThat(actualTodos).hasSize(1)
+    }
+
+    @Test
+    fun testDeleteAndAddAndGetTodos() {
+        // When
+        todoDao.insertTodo(ROOM_TODO0)
+        todoDao.insertTodo(ROOM_TODO1)
+        todoDao.deleteTodo(ROOM_TODO0)
+
+        // Then
+        val actualTodos = todoDao.getTodos()
+        assertThat(actualTodos).doesNotContain(ROOM_TODO0)
+        assertThat(actualTodos).hasSize(1)
+    }
 
 }
