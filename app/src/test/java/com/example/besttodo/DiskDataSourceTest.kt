@@ -93,5 +93,69 @@ class DiskDataSourceTest {
         verify(mockTodoDao).getTodos()
     }
 
+    @Test
+    fun testUpdateTodosSuccess() {
+        // Given
+        val mockTodoDao = mock<TodoDao>()
+        doNothing().`when`(mockTodoDao).updateTodo(ROOM_TODO0)
+
+        diskDataSource = DiskDataSource(mockTodoDao)
+
+        // When
+        val result = diskDataSource.updateTodo(DOMAIN_TODO0)
+
+        // Then
+        assertThat(result).isEqualTo(ResultSuccess(Unit))
+        verify(mockTodoDao).updateTodo(ROOM_TODO0)
+    }
+
+    @Test
+    fun testUpdateTodosFailed() {
+        // Given
+        val mockTodoDao = mock<TodoDao>()
+        whenever(mockTodoDao.updateTodo(ROOM_TODO0)).doThrow(RuntimeException(FAILURE_REASON))
+
+        diskDataSource = DiskDataSource(mockTodoDao)
+
+        // When
+        val result = diskDataSource.updateTodo(DOMAIN_TODO0)
+
+        // Then
+        assertThat(result).isEqualTo(ResultFailure(FAILURE_REASON))
+        verify(mockTodoDao).updateTodo(ROOM_TODO0)
+    }
+
+    @Test
+    fun testDeleteTodosSuccess() {
+        // Given
+        val mockTodoDao = mock<TodoDao>()
+        doNothing().`when`(mockTodoDao).deleteTodo(ROOM_TODO0)
+
+        diskDataSource = DiskDataSource(mockTodoDao)
+
+        // When
+        val result = diskDataSource.deleteTodo(DOMAIN_TODO0)
+
+        // Then
+        assertThat(result).isEqualTo(ResultSuccess(Unit))
+        verify(mockTodoDao).deleteTodo(ROOM_TODO0)
+    }
+
+    @Test
+    fun testDeleteTodosFailed() {
+        // Given
+        val mockTodoDao = mock<TodoDao>()
+        whenever(mockTodoDao.deleteTodo(ROOM_TODO0)).doThrow(RuntimeException(FAILURE_REASON))
+
+        diskDataSource = DiskDataSource(mockTodoDao)
+
+        // When
+        val result = diskDataSource.deleteTodo(DOMAIN_TODO0)
+
+        // Then
+        assertThat(result).isEqualTo(ResultFailure(FAILURE_REASON))
+        verify(mockTodoDao).deleteTodo(ROOM_TODO0)
+    }
+
 
 }
