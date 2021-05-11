@@ -11,27 +11,11 @@ class TestTodoApplication : RainbowCakeApplication() {
 
     override lateinit var injector: RainbowCakeComponent
 
-    companion object {
-        lateinit var db: AppDatabase
-            private set
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        db = Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "todos.db"
-        ).build()
-    }
-
     override fun setupInjector() {
         injector = DaggerTestAppComponent
             .builder()
             .applicationModule(ApplicationModule(this))
             .build()
     }
-
-
-
 
 }

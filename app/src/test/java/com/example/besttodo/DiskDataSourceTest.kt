@@ -1,59 +1,96 @@
 package com.example.besttodo
 
-import co.zsmb.rainbowcake.test.assertObserved
-import co.zsmb.rainbowcake.test.base.PresenterTest
-import co.zsmb.rainbowcake.test.base.ViewModelTest
-import co.zsmb.rainbowcake.test.observeStateAndEvents
 import com.example.besttodo.data.ResultFailure
 import com.example.besttodo.data.ResultSuccess
 import com.example.besttodo.data.disk.DiskDataSource
-import com.example.besttodo.data.disk.DiskDataSource_Factory
 import com.example.besttodo.data.disk.TodoDao
-import com.example.besttodo.domain.TodosInteractor
+import com.example.besttodo.data.disk.models.RoomTodo
 import com.example.besttodo.domain.models.DomainTodo
-import com.example.besttodo.ui.todos.*
-import com.example.besttodo.ui.todos.models.UiTodo
-import com.example.besttodo.utils.ResourcesHelper
-import kotlinx.coroutines.test.runBlockingTest
-import net.bytebuddy.dynamic.DynamicType
-import org.junit.Before
+import com.google.common.truth.Truth.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
-import org.mockito.verification.VerificationMode
-import javax.sql.DataSource
+import org.mockito.kotlin.*
 
-@RunWith(MockitoJUnitRunner::class)
 class DiskDataSourceTest {
 
-    companion object {
-        private val TODOS = List(2) {
-            DomainTodo(it.toLong(), "Name${it}")
-        }
-        private val TODO_UI = UiTodo(0, "Name0")
-        private val TODO_DOMAIN = DomainTodo(0, "Name0")
-        private val FAILURE_REASON = "Something went wrong"
+    private val DOMAIN_TODOS = List(2) {
+        DomainTodo(id = it.toLong(), name = "Name${it}")
     }
+    private val DOMAIN_TODO0 = DOMAIN_TODOS[0]
+    private val DOMAIN_TODO1= DOMAIN_TODOS[1]
+
+    private val ROOM_TODOS = List(2) {
+        RoomTodo(id = it.toLong(), name = "Name${it}")
+    }
+
+    private val ROOM_TODO0 = ROOM_TODOS[0]
+    private val ROOM_TODO1= ROOM_TODOS[1]
+
+    private val FAILURE_REASON = "Something went wrong"
 
     private lateinit var diskDataSource: DiskDataSource
 
     @Test
-    fun testGetTodosResultSuccess() = runBlockingTest {
+    fun testAddTodosSuccess() {
         // Given
-        val mockDiskDataSource = mock<DiskDataSource>()
-        whenever(mockDiskDataSource.getTodos()) doReturn ResultSuccess(value = TODOS)
+        val mockTodoDao = mock<TodoDao>()
+        doNothing().`when`(mockTodoDao).insertTodo(ROOM_TODO0)
 
+        diskDataSource = DiskDataSource(mockTodoDao)
 
-        diskDataSource = DiskDataSource()
+        // When
+        val result = diskDataSource.addTodo(DOMAIN_TODO0)
 
-        //When, Then
-        diskDataSource.getTodos()
-        verify(diskDataSource).getTodos()
+        // Then
+        assertThat(result).isEqualTo(ResultSuccess(Unit))
+        verify(mockTodoDao).insertTodo(ROOM_TODO0)
+    }
+
+    @Test
+    fun testAddTodosFailed() {
+        // Given
+        val mockTodoDao = mock<TodoDao>()
+        whenever(mockTodoDao.insertTodo(ROOM_TODO0)).doThrow(RuntimeException(FAILURE_REASON))
+
+        diskDataSource = DiskDataSource(mockTodoDao)
+
+        // When
+        val result = diskDataSource.addTodo(DOMAIN_TODO0)
+
+        // Then
+        assertThat(result).isEqualTo(ResultFailure(FAILURE_REASON))
+        verify(mockTodoDao).insertTodo(ROOM_TODO0)
+    }
+
+    @Test
+    fun testGetTodosSuccess() {
+        // Given
+        val mockTodoDao = mock<TodoDao>()
+        whenever(mockTodoDao.getTodos()) doReturn ROOM_TODOS
+
+        diskDataSource = DiskDataSource(mockTodoDao)
+
+        // When
+        val result = diskDataSource.getTodos()
+
+        // Then
+        assertThat(result).isEqualTo(ResultSuccess(DOMAIN_TODOS))
+        verify(mockTodoDao).getTodos()
+    }
+
+    @Test
+    fun testGetTodosFailed() {
+        // Given
+        val mockTodoDao = mock<TodoDao>()
+        whenever(mockTodoDao.getTodos()).doThrow(RuntimeException(FAILURE_REASON))
+
+        diskDataSource = DiskDataSource(mockTodoDao)
+
+        // When
+        val result = diskDataSource.getTodos()
+
+        // Then
+        assertThat(result).isEqualTo(ResultFailure(FAILURE_REASON))
+        verify(mockTodoDao).getTodos()
     }
 
 
