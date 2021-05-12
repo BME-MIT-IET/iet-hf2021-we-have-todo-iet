@@ -1,12 +1,10 @@
 package com.example.besttodo
 
 import com.example.besttodo.ui.todos.models.UiTodo
-import com.example.besttodo.utils.validate
 import com.google.common.truth.Truth.assertThat
-import org.junit.Assert.*
 import org.junit.Test
 
-class TodoTest {
+/*class TodoTest {
 
     @Test
     fun todoValidate_todoWithNotEmptyName_returnsTrue() {
@@ -27,4 +25,4 @@ class TodoTest {
     }
 
 
-}
+}*/

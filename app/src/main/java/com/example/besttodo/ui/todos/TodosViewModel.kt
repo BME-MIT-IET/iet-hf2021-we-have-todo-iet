@@ -37,7 +37,7 @@ class TodosViewModel @Inject constructor(
             viewState = Uploading
             when(val result = todosPresenter.addTodo(todo)) {
                 is ResultSuccess -> {
-                    ActionSuccess(resourcesHelper.getString(R.string.txt_created))
+                    postEvent(ActionSuccess(resourcesHelper.getString(R.string.txt_created)))
                 }
                 is ResultFailure -> {
                     postEvent(Failed(result.reason))

@@ -9,9 +9,9 @@ import com.example.besttodo.data.disk.models.RoomTodo
 import com.example.besttodo.domain.models.DomainTodo
 import javax.inject.Inject
 
-class DiskDataSource @Inject constructor() {
-
-    val todoDao = TodoApplication.db.todoDao()
+class DiskDataSource @Inject constructor(
+    private val todoDao: TodoDao
+) {
 
     fun getTodos(): Result<List<DomainTodo>, String> {
         return try {
