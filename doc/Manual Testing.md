@@ -9,12 +9,15 @@ Teszt terv:
 - Todo hozzáadása név nélkül
 - Todo részleteinek megnézése
 - Todo törlése
+- Határok tesztelése
 
 ### Todo hozzáadása névvel
 
 Az alábbi képeken jól látszódik, hogy egyértelmű visszajelzést kapunk a Todo létrejöttéről és meg is jelenik a listában.
 
 ![](images/Todo_hozzaadas_nevvel.png)
+
+
 ![](images/Todo_hozzaadas_nevvel_1.png)
 
 ### Todo hozzáadása név nélkül
@@ -34,6 +37,14 @@ Egyszeri megnyomásra megnészhetjük a Todo részleteit.
 Hosszan tartó nyomásra lehet törölni a Todo-t. Egy Todo-t nem lehet véletlenül törölni, mert megerősítést vár az alkalmazás a felhasználótól.
 
 ![](images/Torles.png)
+
+### Határok tesztelése
+
+Ha van 5 pepipálatlan Todo, akkor nem enged hatodikat felvenni, mert csak 5 megcsinálatlan Todo lehet a listában.
+
+![](images/5_undone_Todo.png)
+
+![](images/5_undune_Todo_1.png)
 
 ## Következmény
 
