@@ -23,5 +23,5 @@ Alább láthatóak a Unit tesztelés céljából létrehozott osztályok és a t
 
 ## Tanulság/észrevétel
 
-Az adatbázis leválasztása és külön tesztelése a közvetlenül tőle függő DiskDataSource osztálytól külön odafigyelést igényelt, egyébként a többi osztály metódusainak a tesztelése nem okozott problémát.
+Az adatbázis leválasztása és külön tesztelése a közvetlenül tőle függő DiskDataSource osztálytól külön odafigyelést igényelt, egyébként a többi osztály metódusainak a tesztelése nem okozott problémát a kotlinos keretek felépítése után.
 
