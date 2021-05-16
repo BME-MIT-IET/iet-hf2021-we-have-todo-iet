@@ -54,7 +54,6 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
 
@@ -127,12 +126,12 @@ dependencies {
     testImplementation "co.zsmb:rainbow-cake-test:1.3.0"
 
     // Dagger
-    implementation 'com.google.dagger:dagger:2.32'
-    kapt 'com.google.dagger:dagger-compiler:2.32'
+    implementation 'com.google.dagger:dagger:2.33'
+    kapt 'com.google.dagger:dagger-compiler:2.33'
 
     // Dagger Test
-    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.32'
-    kaptTest 'com.google.dagger:dagger-compiler:2.32'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.33'
+    kaptTest 'com.google.dagger:dagger-compiler:2.33'
 
     // Kotlin
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.1"
