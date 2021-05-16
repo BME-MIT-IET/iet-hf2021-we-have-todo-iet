@@ -9,7 +9,6 @@ import com.example.besttodo.ui.todos.*
 import com.example.besttodo.ui.todos.models.UiTodo
 import com.example.besttodo.utils.ResourcesHelper
 import kotlinx.coroutines.test.runBlockingTest
-import net.bytebuddy.dynamic.DynamicType
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -19,7 +18,6 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
-import org.mockito.verification.VerificationMode
 
 @RunWith(MockitoJUnitRunner::class)
 class TodosViewModelTest : ViewModelTest() {
@@ -29,7 +27,7 @@ class TodosViewModelTest : ViewModelTest() {
             UiTodo(it.toLong(), "Name${it}")
         }
         private val TODO = UiTodo(0, "Name0")
-        private val FAILURE_REASON = "Something went wrong"
+        private const val FAILURE_REASON = "Something went wrong"
         private const val MOCK_RESOURCES_HELPER_STRING = "MockResourcesHelperString"
     }
 
@@ -51,7 +49,7 @@ class TodosViewModelTest : ViewModelTest() {
         viewModel = TodosViewModel(mockTodosPresenter, mockResourcesHelper)
 
         //When, Then
-        viewModel.observeStateAndEvents { stateObserver, eventsObserver ->
+        viewModel.observeStateAndEvents { stateObserver, _ ->
             viewModel.load()
             stateObserver.assertObserved(Initial, Loading, TodosLoaded(TODOS))
         }
@@ -124,7 +122,7 @@ class TodosViewModelTest : ViewModelTest() {
         viewModel.load()
 
         //When, Then
-        viewModel.observeStateAndEvents { stateObserver, eventsObserver ->
+        viewModel.observeStateAndEvents { stateObserver, _ ->
             viewModel.updateTodo(TODO)
             stateObserver.assertObserved(TodosLoaded(TODOS), Loading, TodosLoaded(TODOS))
         }

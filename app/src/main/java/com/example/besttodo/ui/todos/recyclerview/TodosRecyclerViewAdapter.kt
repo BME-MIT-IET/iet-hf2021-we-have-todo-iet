@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.besttodo.R
 import com.example.besttodo.databinding.TodosRowBinding
 import com.example.besttodo.ui.todos.models.UiTodo
 

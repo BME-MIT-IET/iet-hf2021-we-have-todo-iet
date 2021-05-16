@@ -3,11 +3,9 @@ package com.example.besttodo.ui.todos
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import co.zsmb.rainbowcake.base.OneShotEvent
 import co.zsmb.rainbowcake.base.RainbowCakeFragment
 import co.zsmb.rainbowcake.dagger.getViewModelFromFactory
@@ -20,7 +18,6 @@ import com.example.besttodo.ui.todos.models.UiTodo
 import com.example.besttodo.ui.todos.recyclerview.TodosRecyclerViewAdapter
 import com.google.android.material.snackbar.Snackbar
 import java.io.Serializable
-import java.time.Duration
 
 class TodosFragment : RainbowCakeFragment<TodosViewState, TodosViewModelBase>(),
     TodosRecyclerViewAdapter.TodoItemClickListener {

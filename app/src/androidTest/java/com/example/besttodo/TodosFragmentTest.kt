@@ -52,13 +52,10 @@ class TodosFragmentTest {
             TodosFragment()
         }
 
-        scenario.onFragment(object : FragmentScenario.FragmentAction<TodosFragment> {
-            override fun perform(fragment: TodosFragment) {
-                navController.setGraph(R.navigation.mobile_navigation)
-                Navigation.setViewNavController(fragment.requireView(), navController)
-                navController.setCurrentDestination(R.id.navigation_home)
-            }
-
+        scenario.onFragment(FragmentScenario.FragmentAction { fragment ->
+            navController.setGraph(R.navigation.mobile_navigation)
+            Navigation.setViewNavController(fragment.requireView(), navController)
+            navController.setCurrentDestination(R.id.navigation_home)
         })
     }
 

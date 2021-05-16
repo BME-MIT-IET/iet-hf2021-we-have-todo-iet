@@ -16,14 +16,12 @@ class DiskDataSourceTest {
         DomainTodo(id = it.toLong(), name = "Name${it}")
     }
     private val DOMAIN_TODO0 = DOMAIN_TODOS[0]
-    private val DOMAIN_TODO1= DOMAIN_TODOS[1]
 
     private val ROOM_TODOS = List(2) {
         RoomTodo(id = it.toLong(), name = "Name${it}")
     }
 
     private val ROOM_TODO0 = ROOM_TODOS[0]
-    private val ROOM_TODO1= ROOM_TODOS[1]
 
     private val FAILURE_REASON = "Something went wrong"
 
