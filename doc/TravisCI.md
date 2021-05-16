@@ -10,7 +10,7 @@ A csapat által választott projekt egy Android projekt volt. Emiatt külön ér
 ## Eredmények, összefoglalás
 Sikerült tehát hozzáadnom a projekthez a TravisCI eszközt, és ezt megfelelően beüzemelnem. Az alábbi képen a projekthez kapcsolódó sikeres tesztre látható példa:
 
-![Successful build](images/Successful_Build.JPG)
+![Successful build](images/Successful_Build.jpg)
 
 Ezen a képen pedig látható, hogy a sikeres integráció eredményeképpen a projekten is megjelenik az automatizált tesztek eredménye:
 
