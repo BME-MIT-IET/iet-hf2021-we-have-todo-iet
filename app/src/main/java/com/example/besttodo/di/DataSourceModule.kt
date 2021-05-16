@@ -3,10 +3,8 @@ package com.example.besttodo.di
 import android.content.Context
 import androidx.room.Room
 import com.example.besttodo.data.disk.AppDatabase
-import com.example.besttodo.data.disk.TodoDao
 import dagger.Module
 import dagger.Provides
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module

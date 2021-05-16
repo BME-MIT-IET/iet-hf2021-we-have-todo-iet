@@ -5,10 +5,8 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.besttodo.data.disk.AppDatabase
-import com.example.besttodo.data.disk.DiskDataSource
 import com.example.besttodo.data.disk.TodoDao
 import com.example.besttodo.data.disk.models.RoomTodo
-import com.example.besttodo.domain.models.DomainTodo
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before

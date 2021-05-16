@@ -1,6 +1,5 @@
 package com.example.besttodo.ui.todos
 
-import android.util.Log
 import co.zsmb.rainbowcake.withIOContext
 import com.example.besttodo.data.Result
 import com.example.besttodo.data.ResultFailure

@@ -1,7 +1,6 @@
 package com.example.besttodo.data.disk
 
 import android.util.Log
-import com.example.besttodo.TodoApplication
 import com.example.besttodo.data.Result
 import com.example.besttodo.data.ResultFailure
 import com.example.besttodo.data.ResultSuccess
